@@ -43,12 +43,24 @@
 		});
 
 		//创建自定义命令
-		myApp.directive("highlight", function () {
+		myApp.directive("highlight", function ($filter) {
+			/* 如果检测的对象是英文的星期几
 			return function (scope, element, attrs) {//为什么不$scope
 				if (scope.day == attrs["highlight"]) {
 					element.css("color", "red");
 				}
 			};
+			*/
+
+			var dayFilter = $filter("dayName");
+
+			console.log(dayFilter);
+
+			return function (scope, element, attrs) {
+				if (dayFilter(scope.day) == attrs["highlight"]) {
+					element.css("color", "red");
+				}
+			}
 		});
 
 		//创造一个过滤器
@@ -87,7 +99,7 @@
 		<div class="page-header">
 			<h3>AngularJS App</h3>
 		</div>
-		<h4 ng-controller="dayCtrl" highlight="Wednesday">
+		<h4 ng-controller="dayCtrl" highlight="Thursday">
 			Today is {{day || "(unknown)" | dayName}}
 		</h4>
 		<h4 ng-controller="tomorrowCtrl">
