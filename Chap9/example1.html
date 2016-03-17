@@ -1,0 +1,100 @@
+<!DOCTYPE>
+<html ng-app="exampleApp">
+<head>
+	<title>AngularJs Demo</title>
+	<link rel="stylesheet" type="text/css" href="bootstrap.css">
+	<link rel="stylesheet" type="text/css" href="bootstrap-theme.css">
+	<script type="text/javascript" src="angular.js"></script>
+	<script type="text/javascript">
+		var myApp = angular.module('exampleApp', []);
+
+
+		/*
+		//当只有一个控制器时
+		myApp.controller('dayCtrl', function ($scope){
+			var dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+			$scope.day = dayNames[new Date().getDay()];
+			$scope.tomorrow = dayNames[(new Date().getDay() + 1) % 7];
+		});
+		*/
+
+		
+		//当有多个控制器时
+		myApp.controller('dayCtrl', function ($scope) {
+			//没有过滤器的情况下
+			/*
+			var dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+			$scope.day = dayNames[new Date().getDay()];
+			*/
+
+			//有了过滤器的情况下
+			$scope.day = new Date().getDay();
+		});
+
+		myApp.controller('tomorrowCtrl', function ($scope) {
+			//没有过滤器的情况下
+			/*
+			var dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+			$scope.tomorrow = dayNames[(new Date().getDay() + 1) % 7];
+			*/
+
+			//有了过滤器
+			$scope.tomorrow = new Date().getDay() + 1;
+		});
+
+		//创建自定义命令
+		myApp.directive("highlight", function () {
+			return function (scope, element, attrs) {//为什么不$scope
+				if (scope.day == attrs["highlight"]) {
+					element.css("color", "red");
+				}
+			};
+		});
+
+		//创造一个过滤器
+		myApp.filter("dayName", function () {
+			var dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+			return function (input) {
+				return angular.isNumber(input) ? dayNames[input] : input;
+			};
+		});
+
+	</script>
+
+</head>
+<body>
+	<!-- 如果只有一个视图 -->
+	<div class="panel" ng-controller="dayCtrl">
+		<div class="page-header">
+			<h3>AngularJS App</h3>
+		</div>
+		<h4>Today is {{day || "(unknown)"}}</h4>
+	</div>
+	<!-- End -->
+
+	<!-- 尝试并存两个视图 -->
+	<div class="panel">
+		<div class="page-header">
+			<h3>AngularJS App</h3>
+		</div>
+		<h4 ng-controller="dayCtrl">Today is {{day || "(unknown)"}}</h4>
+		<h4 ng-controller="dayCtrl">Tomorrow is {{tomorrow || "(unknown)"}}</h4>
+	</div>
+	<!-- End -->
+
+	<!-- 尝试并存多个控制器-->
+	<div class="panel">
+		<div class="page-header">
+			<h3>AngularJS App</h3>
+		</div>
+		<h4 ng-controller="dayCtrl" highlight="Wednesday">
+			Today is {{day || "(unknown)" | dayName}}
+		</h4>
+		<h4 ng-controller="tomorrowCtrl">
+			Tomorrow is {{tomorrow || "(unknown)" | dayName}}
+		</h4>
+	</div>
+	<!-- End -->
+
+</body>
+</html>
