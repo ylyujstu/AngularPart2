@@ -1,0 +1,46 @@
+<!DOCTYPE>
+<html ng-app="exampleApp">
+<head>
+	<title>Directives</title>
+	<meta charset="UTF-8">
+	<script type="text/javascript" src="angular.js"></script>
+	<link rel="stylesheet" type="text/css" href="bootstrap.css">
+	<link rel="stylesheet" type="text/css" href="bootstrap-theme.css">
+	<script type="text/javascript">
+		angular.module('exampleApp', [])
+			.controller('defaultCtrl', function ($scope){
+				$scope.todos = [
+                    { action: "Get groceries", complete: false },
+                    { action: "Call plumber", complete: false },
+                    { action: "Buy running shoes", complete: true },
+                    { action: "Buy flowers", complete: false },
+                    { action: "Call family", complete: false }
+                ];
+			});
+	</script>
+</head>
+<body>
+
+	<div id="todoPanel" class="panel" ng-controller="defaultCtrl">
+        <h3 class="panel-header">To Do List</h3>
+        <h4>回顾上一章节的效果</h4>
+        
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Action</th>
+                    <th>Done</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="item in todos" ng-class="$odd ? 'odd' : 'even'">
+                    <td>{{$index+1}}</td>
+                    <td ng-repeat="prop in item">{{prop}}</td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+</body>
+</html>
